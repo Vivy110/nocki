@@ -22,48 +22,56 @@ services:
     ports:
       - "3005:3005"
       - "3006:3006"
+    restart: always
 
   nock2:
     build: .
     ports:
       - "3015:3005"
       - "3016:3006"
+    restart: always
 
   nock3:
     build: .
     ports:
       - "3025:3005"
       - "3026:3006"
+    restart: always
 
   nock4:
     build: .
     ports:
       - "3035:3005"
       - "3036:3006"
+    restart: always
 
   nock5:
     build: .
     ports:
-      - "3045:3005"
-      - "3046:3006"
+      - "3042:3005"
+      - "3048:3006"
+    restart: always
 
   nock6:
     build: .
     ports:
+      - "3045:3005"
+      - "3046:3006"
+    restart: always
+
+      nock7:
+    build: .
+    ports:
       - "3055:3005"
       - "3056:3006"
+    restart: always
 
-  nock7:
+      nock8:
     build: .
     ports:
       - "3065:3005"
       - "3066:3006"
-
-  nock8:
-    build: .
-    ports:
-      - "3075:3005"
-      - "3076:3006"
+    restart: always
 ```
 jika ingin lebih banyak tinggal ulangi command 
 
