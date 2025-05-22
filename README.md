@@ -133,10 +133,14 @@ docker run -d --name nock4 -p 3025:3005 -p 3037:3006 nockchain_nock4
 docker run -d --name nock5 -p 3035:3005 -p 3038:3006 nockchain_nock5
 docker run -d --name nock6 -p 3045:3005 -p 3039:3006 nockchain_nock6
 ```
+
+NOTE:port tidak boleh sama nanti error
+
 cek berapa core yang sudah terpakai
 ```bash
 htop
 ```
+
 
 # DONE
 
