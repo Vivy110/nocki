@@ -136,7 +136,14 @@ docker run -d --name nock6 -p 3045:3005 -p 3039:3006 nockchain_nock6
 
 NOTE:port tidak boleh sama nanti error
 
+cara cek log
+
+```bash
+docker logs <nama_kontainer>
+```
+
 cek berapa core yang sudah terpakai
+
 ```bash
 htop
 ```
