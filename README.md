@@ -30,6 +30,10 @@ cd node1 && bash ../scripts/run_nockchain_miner.sh
 ```
 
 # NOTE: jika ingin memakai banyak core silahkan ulangi dari screen dan ubah nama miner sesuai dengan yang telah di buat 
+
+
+FULL CORE OTOMATIS 
+note: belum stabil
 ```bash
 cd nockchain
 nano start-miner.sh
