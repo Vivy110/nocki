@@ -23,9 +23,9 @@ echo " ██║  ██║ ██║╚██╗ ██╔╝██╔══█
 echo " ██████╔╝██║ ╚████╔╝  ██║  ██║"
 echo " ╚═════╝ ╚═╝  ╚═══╝    ╚═╝  ╚═╝"                                                                                                   \::/                                                      \/____/
   echo -e "${RESET}"
-  echo "               Gabung ke Channel TG: "
-  echo "               GitHub saya: "
-  echo "               Twitter saya: "
+  echo "               Gabung ke Channel TG: Projek "
+  echo "               GitHub saya: Sok "
+  echo "               Twitter saya: Elit Kontl "
   echo "-----------------------------------------------"
   echo ""
 }
