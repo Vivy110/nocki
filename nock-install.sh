@@ -22,9 +22,9 @@ function show_banner() {
   echo "               ╔╝╔╗╚╣╚═╝║╚══╣╚╩═║╔═╗║╚═╝║"
   echo "               ╚═╝╚═╩═══╩═══╩═══╩╝─╚╩═══╝"
   echo -e "${RESET}"
-  echo "               Ikuti saluran TG: t.me/xuegaoz"
-  echo "               GitHub saya: github.com/Gzgod"
-  echo "               Twitter saya: @Xuegaogx"
+  echo "               
+  echo "               GitHub saya: github.com/vivy110"
+  echo "               Twitter saya: @Diva_Hashimoto"
   echo "-----------------------------------------------"
   echo ""
 }
@@ -354,6 +354,8 @@ if ./target/release/nockchain --help | grep -q -- "--leader-port"; then
   NOCKCHAIN_CMD="RUST_LOG=trace ./target/release/nockchain --mining-pubkey \"$PUBLIC_KEY\" --mine --leader-port $LEADER_PORT --follower-port $FOLLOWER_PORT"
 else
   NOCKCHAIN_CMD="RUST_LOG=trace ./target/release/nockchain --mining-pubkey \"$PUBLIC_KEY\" --mine"
+else
+  NOCKCHAIN_CMD="sh ./scripts/run_nockchain_miner.sh"
 fi
 
 # Jalankan perintah nockchain di sesi screen, output tampil di screen dan file miner.log
