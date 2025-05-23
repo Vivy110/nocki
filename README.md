@@ -3,7 +3,7 @@
 ```bash
 wget -O nock-install.sh https://raw.githubusercontent.com/Vivy110/nocki/refs/heads/main/nock-install.sh && sed -i 's/\r$//' nock-install.sh && chmod +x nock-install.sh && ./nock-install.sh
 ```
-
+jika sudah install lewati step ke 5 
 # FULL CORE SETUP
 masuk direktori
 ```bash
