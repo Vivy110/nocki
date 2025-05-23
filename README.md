@@ -7,6 +7,9 @@ jika sudah install lewati step ke 5
 # FULL CORE SETUP
 masuk direktori
 ```bash
+sudo sysctl -w vm.overcommit_memory=1
+```
+```bash
 cd nockchain
 ```
 buat direktori node1 node2 dst.
