@@ -22,7 +22,6 @@ function show_banner() {
   echo "               ╔╝╔╗╚╣╚═╝║╚══╣╚╩═║╔═╗║╚═╝║"
   echo "               ╚═╝╚═╩═══╩═══╩═══╩╝─╚╩═══╝"
   echo -e "${RESET}"
-  echo "               
   echo "               GitHub saya: github.com/vivy110"
   echo "               Twitter saya: @Diva_Hashimoto"
   echo "-----------------------------------------------"
