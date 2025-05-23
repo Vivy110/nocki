@@ -5,7 +5,7 @@ wget -O nock-install.sh https://raw.githubusercontent.com/Vivy110/nocki/refs/hea
 ```
 
 # FULL CORE SETUP
-buat dockerfile di folder nockchain
+masuk direktori
 ```bash
 cd nockchain
 ```
@@ -18,11 +18,16 @@ copy .env ke direktori
 cp .env node1/
 cp .env node2/
 ```
+```bash
+screen -S miner1
+```
 run dengan bash 
 ```bash
 cd node1 && bash ../scripts/run_nockchain_miner.sh
-cd node2 && bash ../scripts/run_nockchain_miner.sh
 ```
+
+# NOTE: jika ingin memakai banyak core silahkan ulangi dari screen dan ubah nama miner sesuai dengan yang telah di buat 
+
 cek berapa core yang sudah terpakai
 
 ```bash
