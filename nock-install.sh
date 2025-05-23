@@ -127,15 +127,18 @@ function build_and_configure() {
   fi
   cd "$NCK_DIR" || { echo -e "${RED}[-] Gagal masuk ke direktori nockchain!${RESET}"; pause_and_return; return; }
   echo -e "[*] Mengompilasi komponen inti..."
-  make install-hoonc || { echo -e "${RED}[-] Gagal menjalankan make install-hoonc, periksa Makefile atau dependensi!${RESET}"; pause_and_return; return; }
+  make install-hoonc 
+  export PATH="$HOME/.cargo/bin:$PATH" || { echo -e "${RED}[-] Gagal menjalankan make install-hoonc, periksa Makefile atau dependensi!${RESET}"; pause_and_return; return; }
   if command -v hoonc &> /dev/null; then
     echo -e "[*] hoonc berhasil diinstal, perintah tersedia: hoonc"
   else
     echo -e "${YELLOW}[!] Peringatan: perintah hoonc tidak tersedia, instalasi mungkin tidak lengkap.${RESET}"
   fi
   make build || { echo -e "${RED}[-] Gagal menjalankan make build, periksa Makefile atau dependensi!${RESET}"; pause_and_return; return; }
-  make install-nockchain-wallet || { echo -e "${RED}[-] Gagal menjalankan make install-nockchain-wallet, periksa Makefile atau dependensi!${RESET}"; pause_and_return; return; }
-  make install-nockchain || { echo -e "${RED}[-] Gagal menjalankan make install-nockchain, periksa Makefile atau dependensi!${RESET}"; pause_and_return; return; }
+  make install-nockchain-wallet 
+  export PATH="$HOME/.cargo/bin:$PATH" || { echo -e "${RED}[-] Gagal menjalankan make install-nockchain-wallet, periksa Makefile atau dependensi!${RESET}"; pause_and_return; return; }
+  make install-nockchain
+  export PATH="$HOME/.cargo/bin:$PATH" || { echo -e "${RED}[-] Gagal menjalankan make install-nockchain, periksa Makefile atau dependensi!${RESET}"; pause_and_return; return; }
   echo -e "[*] Mengatur environment variable..."
   RC_FILE="$HOME/.bashrc"
   [[ "$SHELL" == *"zsh"* ]] && RC_FILE="$HOME/.zshrc"
