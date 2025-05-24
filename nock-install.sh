@@ -15,11 +15,11 @@ NCK_DIR="$HOME/nockchain"
 function show_banner() {
   clear
   echo -e "${BOLD}${BLUE}"
-  echo "   ____  _   _ ___   _   "
-  echo "  |  _ \| | | |_ _| / \  "
-  echo "  | | | | | | || | / _ \ "
-  echo "  | |_| | |_| || |/ ___ \\"
-  echo "  |____/ \___/___/_/   \_\\"
+  echo "   ____  _____ ____    _    "
+  echo "  |  _ \| ____|  _ \  / \   "
+  echo "  | | | |  _| | | | |/ _ \  "
+  echo "  | |_| | |___| |_| / ___ \ "
+  echo "  |____/|_____|____/_/   \_\ "
   echo -e "${RESET}"
   echo "               Gabung Channel Telegram: Projek"
   echo "               GitHub Saya: Sok"
@@ -28,105 +28,100 @@ function show_banner() {
   echo ""
 }
 
-# ========= Tunggu Tombol untuk Lanjut =========
+# ========= Fungsi-fungsi =========
 function pause_and_return() {
   echo ""
   read -n1 -r -p "Tekan tombol apapun untuk kembali ke menu utama..." key
   main_menu
 }
 
-# ========= Instalasi Dependensi =========
 function install_dependencies() {
-  if ! command -v apt-get &> /dev/null; then
-    echo -e "${RED}[-] Skrip ini mengasumsikan sistem Debian/Ubuntu (apt). Silakan instal dependensi secara manual!${RESET}"
-    pause_and_return
-    return
-  fi
-  echo -e "[*] Memperbarui sistem dan menginstal dependensi..."
-  apt-get update && apt-get upgrade -y
-  sudo apt install -y curl git make clang llvm-dev libclang-dev screen
-  echo -e "${GREEN}[+] Dependensi selesai diinstal.${RESET}"
+  echo -e "${YELLOW}Menginstal dependensi yang dibutuhkan...${RESET}"
+  sudo apt update && sudo apt upgrade -y
+  sudo apt install -y git curl wget screen pkg-config libssl-dev libclang-dev make build-essential
+  echo -e "${GREEN}Selesai menginstal dependensi.${RESET}"
   pause_and_return
 }
 
-# ========= Instalasi Rust =========
 function install_rust() {
-  if command -v rustc &> /dev/null; then
-    echo -e "${YELLOW}[!] Rust sudah terinstal, melewati instalasi.${RESET}"
-    pause_and_return
-    return
-  fi
-  echo -e "[*] Menginstal Rust..."
+  echo -e "${YELLOW}Memasang Rust...${RESET}"
   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-  source "$HOME/.cargo/env" || { echo -e "${RED}[-] Gagal mengkonfigurasi variabel lingkungan Rust!${RESET}"; pause_and_return; return; }
+  source "$HOME/.cargo/env"
   rustup default stable
-  echo -e "${GREEN}[+] Rust berhasil diinstal.${RESET}"
+  echo -e "${GREEN}Rust telah berhasil dipasang.${RESET}"
   pause_and_return
 }
 
-# ========= Setup Repository =========
-function setup_repository() {
-  echo -e "[*] Memeriksa repository nockchain..."
+function clone_project() {
+  echo -e "${YELLOW}Mengkloning repositori Nockchain...${RESET}"
   if [ -d "$NCK_DIR" ]; then
-    echo -e "${YELLOW}[?] Direktori nockchain sudah ada, hapus dan clone ulang? (y/n)${RESET}"
-    read -r confirm
-    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
-      rm -rf "$NCK_DIR" "$HOME/.nockapp"
-      git clone https://github.com/zorp-corp/nockchain "$NCK_DIR"
-    else
-      cd "$NCK_DIR" && git pull
-    fi
-  else
-    git clone https://github.com/zorp-corp/nockchain "$NCK_DIR"
+    echo -e "${RED}Direktori nockchain sudah ada. Menghapus terlebih dahulu...${RESET}"
+    rm -rf "$NCK_DIR"
   fi
-  if [ $? -ne 0 ]; then
-    echo -e "${RED}[-] Gagal mengclone repository, periksa jaringan atau izin!${RESET}"
-    pause_and_return
-    return
-  fi
-  cd "$NCK_DIR" || { echo -e "${RED}[-] Gagal masuk ke direktori nockchain!${RESET}"; pause_and_return; return; }
-  if [ -f ".env" ]; then
-    cp .env .env.bak
-    echo -e "[*] .env telah dibackup sebagai .env.bak"
-  fi
-  if [ -f ".env_example" ]; then
-    cp .env_example .env
-    echo -e "${GREEN}[+] File lingkungan .env telah dibuat.${RESET}"
-  else
-    echo -e "${RED}[-] File .env_example tidak ditemukan, periksa repository!${RESET}"
-  fi
-  echo -e "${GREEN}[+] Setup repository selesai.${RESET}"
+  git clone https://github.com/Gzgod/nockchain.git "$NCK_DIR"
+  echo -e "${GREEN}Repositori berhasil dikloning ke $NCK_DIR.${RESET}"
   pause_and_return
 }
 
-# ========= Kompilasi Proyek =========
-function build_and_configure() {
+function build_project() {
+  echo -e "${YELLOW}Membangun proyek Nockchain...${RESET}"
+  cd "$NCK_DIR" || { echo "Gagal masuk direktori proyek."; return; }
+  cargo build --release
+  echo -e "${GREEN}Build selesai.${RESET}"
+  pause_and_return
+}
+
+function run_node() {
+  echo -e "${YELLOW}Menjalankan node dalam screen...${RESET}"
+  cd "$NCK_DIR" || { echo "Gagal masuk direktori proyek."; return; }
+  screen -dmS nockchain_node ./target/release/nockchain
+  echo -e "${GREEN}Node sedang berjalan di dalam screen bernama 'nockchain_node'.${RESET}"
+  echo "Gunakan perintah: screen -r nockchain_node untuk melihat log."
+  pause_and_return
+}
+
+function node_status() {
+  echo -e "${YELLOW}Memeriksa status screen...${RESET}"
+  screen -ls
+  echo -e "${YELLOW}Untuk mengakses: screen -r nockchain_node${RESET}"
+  echo -e "${YELLOW}Untuk keluar tanpa menghentikan node: tekan Ctrl+A lalu D${RESET}"
+  pause_and_return
+}
+
+function configure_mining_key() {
   if [ ! -d "$NCK_DIR" ]; then
     echo -e "${RED}[-] Direktori nockchain tidak ada, jalankan opsi 3 terlebih dahulu!${RESET}"
     pause_and_return
     return
   fi
+  
   cd "$NCK_DIR" || { echo -e "${RED}[-] Gagal masuk ke direktori nockchain!${RESET}"; pause_and_return; return; }
-  echo -e "[*] Mengkompilasi komponen inti..."
-  make install-hoonc || { echo -e "${RED}[-] Gagal menjalankan make install-hoonc, periksa Makefile atau dependensi!${RESET}"; pause_and_return; return; }
-  if command -v hoonc &> /dev/null; then
-    echo -e "[*] hoonc berhasil diinstal, perintah tersedia: hoonc"
+
+  echo -e "${YELLOW}[*] Mengatur kunci mining...${RESET}"
+  
+  if [ -f "wallet_keys.txt" ]; then
+    PUBLIC_KEY=$(grep -i "public key" wallet_keys.txt | awk '{print $NF}' | tail -1)
+    echo -e "${GREEN}[+] Public key ditemukan:${RESET} $PUBLIC_KEY"
   else
-    echo -e "${YELLOW}[!] Peringatan: perintah hoonc tidak tersedia, instalasi mungkin tidak lengkap.${RESET}"
+    echo -e "${YELLOW}[!] File wallet_keys.txt tidak ditemukan${RESET}"
+    read -p "Masukkan public key mining Anda: " PUBLIC_KEY
   fi
-  make build || { echo -e "${RED}[-] Gagal menjalankan make build, periksa Makefile atau dependensi!${RESET}"; pause_and_return; return; }
-  make install-nockchain-wallet || { echo -e "${RED}[-] Gagal menjalankan make install-nockchain-wallet, periksa Makefile atau dependensi!${RESET}"; pause_and_return; return; }
-  make install-nockchain || { echo -e "${RED}[-] Gagal menjalankan make install-nockchain, periksa Makefile atau dependensi!${RESET}"; pause_and_return; return; }
-  echo -e "[*] Mengkonfigurasi variabel lingkungan..."
-  RC_FILE="$HOME/.bashrc"
-  [[ "$SHELL" == *"zsh"* ]] && RC_FILE="$HOME/.zshrc"
-  if ! grep -q "$HOME/.cargo/bin" "$RC_FILE"; then
-    echo "export PATH=\"\$PATH:$HOME/.cargo/bin\"" >> "$RC_FILE"
-    source "$RC_FILE" || echo -e "${YELLOW}[!] Tidak dapat menerapkan variabel lingkungan segera, jalankan source $RC_FILE secara manual atau buka terminal baru.${RESET}"
+
+  if [ -z "$PUBLIC_KEY" ]; then
+    echo -e "${RED}[-] Public key tidak valid!${RESET}"
+    pause_and_return
+    return
+  fi
+
+  if [ -f ".env" ]; then
+    sed -i "s/^MINING_PUBKEY=.*/MINING_PUBKEY=$PUBLIC_KEY/" .env
+    echo -e "${GREEN}[+] Berhasil mengupdate MINING_PUBKEY di .env${RESET}"
   else
-    source "$RC_FILE" || echo -e "${YELLOW}[!] Tidak dapat menerapkan variabel lingkungan segera, jalankan source $RC_FILE secara manual atau buka terminal baru.${RESET}"
+    echo "MINING_PUBKEY=$PUBLIC_KEY" > .env
+    echo -e "${GREEN}[+] File .env dibuat dengan MINING_PUBKEY${RESET}"
   fi
-  echo -e "${GREEN}[+] Kompilasi dan konfigurasi lingkungan selesai.${RESET}"
+
+  echo -e "${YELLOW}[!] Pastikan untuk membackup file .env dan wallet_keys.txt${RESET}"
   pause_and_return
 }
 
@@ -134,16 +129,13 @@ function build_and_configure() {
 function main_menu() {
   show_banner
   echo -e "${BOLD}${GREEN} Pilih opsi yang ingin dijalankan:${RESET}"
-  echo "  1. Instal dependensi sistem"
+  echo "  1. Instal dependensi"
   echo "  2. Instal Rust"
-  echo "  3. Setup repository Nockchain"
-  echo "  4. Kompilasi proyek Nockchain"
-  echo "  5. Buat dompet"
-  echo "  6. Atur kunci mining"
-  echo "  7. Jalankan node"
-  echo "  8. Backup kunci"
-  echo "  9. Lihat log node"
-  echo "  10. Cek saldo"
+  echo "  3. Clone repositori Nockchain"
+  echo "  4. Build proyek Nockchain"
+  echo "  5. Jalankan node"
+  echo "  6. Cek status node"
+  echo "  7. Atur kunci mining"
   echo "  0. Keluar"
   echo ""
   read -rp "Masukkan pilihan Anda: " choice
@@ -151,14 +143,11 @@ function main_menu() {
   case $choice in
     1) install_dependencies ;;
     2) install_rust ;;
-    3) setup_repository ;;
-    4) build_and_configure ;;
-    5) generate_wallet ;;
-    6) configure_mining_key ;;
-    7) start_node ;;
-    8) backup_keys ;;
-    9) view_logs ;;
-    10) check_balance ;;
+    3) clone_project ;;
+    4) build_project ;;
+    5) run_node ;;
+    6) node_status ;;
+    7) configure_mining_key ;;
     0) echo -e "${BLUE}Keluar dari program.${RESET}"; exit 0 ;;
     *) echo -e "${RED}Pilihan tidak valid. Coba lagi.${RESET}"; pause_and_return ;;
   esac
