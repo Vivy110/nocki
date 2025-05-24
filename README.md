@@ -3,8 +3,7 @@
 ```bash
  wget -O nock-install.sh https://raw.githubusercontent.com/Vivy110/nocki/refs/heads/main/nock-install.sh && sed -i 's/\r$//' nock-install.sh && chmod +x nock-install.sh && ./nock-install.sh
 ```
-- jika sudah memiliki pubkey lewati step ke 5 
-- langsung ke step 6 dan 7
+- jika sudah memiliki pubkey lewati step membuat wallet, langsung ke input wallet dan jalankan saja
 
 # FULL CORE SETUP
 masuk direktori
