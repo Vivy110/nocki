@@ -58,7 +58,7 @@ function clone_project() {
     echo -e "${RED}Direktori nockchain sudah ada. Menghapus terlebih dahulu...${RESET}"
     rm -rf "$NCK_DIR"
   fi
-  git clone https://github.com/Gzgod/nockchain.git "$NCK_DIR"
+  git clone https://github.com/zorp-corp/nockchain "$NCK_DIR"
   echo -e "${GREEN}Repositori berhasil dikloning ke $NCK_DIR.${RESET}"
   pause_and_return
 }
