@@ -22,9 +22,9 @@ function show_banner() {
   echo "               ╔╝╔╗╚╣╚═╝║╚══╣╚╩═║╔═╗║╚═╝║"
   echo "               ╚═╝╚═╩═══╩═══╩═══╩╝─╚╩═══╝"
   echo -e "${RESET}"
-  echo "               Ikuti channel TG: t.me/xuegaoz"
-  echo "               GitHub saya: github.com/Gzgod"
-  echo "               Twitter saya: Twitter Xuegao战神@Xuegaogx"
+  echo "               Ikuti channel TG: NOCKONTL"
+  echo "               GitHub saya: PROJEK SOK ELIT"
+  echo "               Twitter saya: FAIR LAUNCH KATANYA"
   echo "-----------------------------------------------"
   echo ""
 }
