@@ -423,11 +423,13 @@ function start_node() {
 
   # Mulai node
   echo -e "[*] Memulai node..."
-  if [ "$node_type" = "1" ]; then
-    script="$NCK_DIR/scripts/run_nockchain_miner.sh --mining-pubkey \"$MINING_PUBKEY\""
-  else
-    script="$NCK_DIR/scripts/run_nockchain_node.sh"
-  fi
+if [ "$NODE_TYPE" = "1" ]; then
+  script_path="$NCK_DIR/scripts/run_nockchain_miner.sh"
+  script_args="--mining-pubkey \"$MINING_PUBKEY\""
+else
+  script_path="$NCK_DIR/scripts/run_nockchain_node.sh"
+  script_args=""
+fi
   if [ ! -f "$script" ]; then
     echo -e "${RED}[-] $script tidak ditemukan, periksa repositori nockchain!${RESET}"
     pause_and_return
