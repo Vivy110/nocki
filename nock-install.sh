@@ -424,7 +424,7 @@ function start_node() {
   # Mulai node
   echo -e "[*] Memulai node..."
   if [ "$node_type" = "1" ]; then
-    script="$NCK_DIR/scripts/run_nockchain_miner.sh"
+    script="$NCK_DIR/scripts/run_nockchain_miner.sh --mining-pubkey \"$MINING_PUBKEY\""
   else
     script="$NCK_DIR/scripts/run_nockchain_node.sh"
   fi
